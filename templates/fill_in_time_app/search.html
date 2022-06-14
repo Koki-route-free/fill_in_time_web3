@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block contents %}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mt-5 border-bottom">
+  <h1 class="h2">検索</h1>
+</div> 
+
+<div id="map"></div>
+
+<div class="version_pc">
+  <form method="POST">
+    {% csrf_token %}
+    <div class="d-flex justify-content-center border-bottom border-top pt-2 pb-2">
+      <div class="">
+        <input class="search-list" id="" type="text" name="sa" size="15" autocomplete="off" maxlength="50" value="" placeholder="エリア・駅 [例:銀座、渋谷]">
+      </div>
+      <div class="">
+        <input class="search-list" id="" type="text" name="sk" size="15" maxlength="50" value="" placeholder="キーワード [例:カラオケ、店名、個室]" autocomplete="off">
+      </div>
+      <div class="">
+        <input type="date" class="search-list">
+      </div>
+      <div class="">
+        <select id="" class="search-list">
+          <option value="0000">0:00</option>
+          <option value="0030">0:30</option>
+          <option value="0100">1:00</option>
+          <option value="0130">1:30</option>
+          <option value="0200">2:00</option>
+          <option value="0230">2:30</option>
+          <option value="0230">2:30</option>
+          <option value="0300">3:00</option>
+          <option value="0330">3:30</option>
+          <option value="0400">4:00</option>
+          <option value="0430">4:30</option>
+          <option value="0500">5:00</option>
+          <option value="0530">5:30</option>
+          <option value="0600">6:00</option>
+          <option value="0630">6:30</option>
+          <option value="0700">7:00</option>
+          <option value="0730">7:30</option>
+          <option value="0800">8:00</option>
+          <option value="0830">8:30</option>
+          <option value="0900">9:00</option>
+          <option value="0930">9:30</option>
+          <option value="0930">9:30</option>
+          <option value="0930">9:30</option>
+          <option value="1000">10:00</option>
+          <option value="1030">10:30</option>
+          <option value="1100">11:00</option>
+          <option value="1130">11:30</option>
+          <option value="1200">12:00</option>
+          <option value="1230">12:30</option>
+          <option value="1300">13:00</option>
+          <option value="1330">13:30</option>
+          <option value="1400">14:00</option>
+          <option value="1430">14:30</option>
+          <option value="1500">15:00</option>
+          <option value="1530">15:30</option>
+          <option value="1600">16:00</option>
+          <option value="1630">16:30</option>
+          <option value="1700">17:00</option>
+          <option value="1730">17:30</option>
+          <option selected="selected" value="1800">18:00</option>
+          <option value="1830">18:30</option>
+          <option value="1900">19:00</option>
+          <option value="1930">19:30</option>
+          <option value="2000">20:00</option>
+          <option value="2030">20:30</option>
+          <option value="2100">21:00</option>
+          <option value="2130">21:30</option>
+          <option value="2200">22:00</option>
+          <option value="2230">22:30</option>
+          <option value="2300">23:00</option>
+          <option value="2330">23:30</option>
+          <option value="0000">24:00</option>
+        </select>                      
+      </div>
+      <div class="">
+        <select id="" class="search-list" >
+          <option value="1">1名</option>
+          <option value="2">2名</option>
+          <option value="3">3名</option>
+          <option value="4">4名</option>
+          <option value="5">5名</option>
+          <option value="6">6名</option>
+          <option value="7">7名</option>
+          <option value="8">8名</option>
+          <option value="9">9名</option>
+          <option value="10">10名</option>
+          <option value="11">11名</option>
+          <option value="12">12名</option>
+          <option value="13">13名</option>
+          <option value="14">14名</option>
+          <option value="15">15名</option>
+          <option value="16">16名</option>
+          <option value="17">17名</option>
+          <option value="18">18名</option>
+          <option value="19">19名</option>
+          <option value="20">20名以上</option>
+        </select>
+      </div>
+      <div class="">
+        <select class="search-list">
+          <option value=".25">15分</option>
+          <option value=".5">30分</option>
+          <option value="1">1時間</option>
+          <option value="1.5">1時間30分</option>
+          <option value="2">2時間</option>
+          <option value="2.5">2時間30分</option>
+          <option value="3">3時間</option>
+          <option value="4">4時間</option>
+          <option value="5">5時間以上</option>
+        </select>
+      </div>
+      <div class="">
+        <select id="" class="search-list" >
+          <option value="0">0円</option>
+          <option value="1000">1000円以内</option>
+          <option value="2000">2000円以内</option>
+          <option value="3000">3000円以内</option>
+          <option value="4000">4000円以内</option>
+          <option value="5000">5000円以内</option>
+          <option value="5001">5000円以上</option>
+        </select>
+      </div>
+      <input type="submit" name="submit" value="検索" class="ml-2">
+    </div>
+  </form>
+</div>
+{% comment %} <div class="version_telephone">
+  <div class="d-flex justify-content-around mt-2 "> 
+    <form action="{% url 'fill_in_time_app:admin' %}" method="POST">
+      <div class="d-flex justify-content-around">
+        <p class="mr-1">
+          <input class="form-control " type="text" name="input_data" maxlength="255">
+        </p>
+        <p>
+          <button type="submit" name="button" class="btn btn-info text-white">
+            検索
+          </button>
+        </p>
+      </div>
+      {% csrf_token %}
+    </form>
+  </div>
+</div> {% endcomment %}
+
+
+<div>
+  検索結果表示
+</div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrAcub-onlqCPAQw5iiA8ugtLtvY5knYA&callback=initMap" async defer></script>
+<script type="text/javascript" src="{% static 'js/fill_in_time_app/search.js'%}"></script>
+{% endblock %}
