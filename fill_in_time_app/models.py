@@ -95,6 +95,16 @@ class ContentsDB(models.Model):
     
     name = 0
     address = 0
+    classification = 0
     telephone = 0
     picture = 0
+    price = 0
+    detail = 0
+    open_time = 0
+    stay_time = 0
+    comments = 0
+    star = 0
+    editer = 0
+    renew_date = 0
+    
     
