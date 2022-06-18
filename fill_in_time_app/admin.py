@@ -2,9 +2,11 @@ from django.contrib import admin
 
 from django.utils.translation import gettext, gettext_lazy as _
 # models.pyで指定したクラス名
-from .models import UserDB
+from .models import UserDB, ContentsDB
 
 admin.site.register(UserDB)
+admin.site.register(ContentsDB)
+
 
 class UserAdmin(admin.ModelAdmin):
     fieldsets = (

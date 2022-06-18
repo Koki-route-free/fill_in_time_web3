@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extra_css%}
+{% endblock %}
+{% block contents %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mt-5 border-bottom">
+  <div class="h2">
+    コンテンツ登録
+  </div>
+</div>
+<br>
+<form method="POST">
+  {% csrf_token %}
+  <label>名称</label>
+  {{ form.name }}
+  {{ form.name.errors }}
+  <label>住所</label>
+  {{ form.address }}
+  {{ form.address.errors }}
+  <label>ホームページURL</label>
+  {{ form.homepage }}
+  {{ form.homepage.errors }}
+  <label>分類</label>
+  {{ form.classification }}
+  <label>電話番号</label>
+  {{ form.telephone}}
+  <label>写真</label>
+  {{ form.picture }}
+  <label>料金</label>
+  {{ form.price }}
+  {{ form.price.errors }}
+  <label>詳細</label>
+  {{ form.detail }}
+  <label>営業日時</label>
+  {{ form.open_time }}
+  <label>定休日</label>
+  {{ form.not_open_day }}
+  <label>滞在時間(最小)</label>
+  {{ form.min_stay_time }}
+  {{ form.min_stay_time.errors }}
+  <label>滞在時間(最大)</label>
+  {{ form.max_stay_time }}
+  {{ form.max_stay_time.errors }}
+  <label>アクセス方法</label>
+  {{ form.how_come }}
+  <label>コメント</label>
+  {{ form.comments }}
+  <label>評価</label>
+  {{ form.star }}
+  <div>
+    <button type="submit" class="btn btn-secondary text-white ">登録</button>
+  </div>
+</form>
+
+{% endblock %}

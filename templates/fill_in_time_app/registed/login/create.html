@@ -5,12 +5,12 @@
   <h1 class="h2">会員登録</h1>
 </div>
 <form method="POST">
+  {% csrf_token %}
   <div>
     <p>
       <a class="text-decoration-none" href="/fill_in_time_app/registed/login/terms">利用規約</a>をご覧の上ご登録ください
     </p>
   </div>
-  {% csrf_token %}
   <label>ニックネーム</label>
   {{ form.username }}
   {{ form.username.errors }}

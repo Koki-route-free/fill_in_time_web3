@@ -16,4 +16,5 @@ urlpatterns = [
     path('registed/login/login/', views.registed_login_login, name='registed_login_login'),
     path('registed/login/create/', views.registed_login_create, name='registed_login_personal'),
     path('logout/', views.logout, name='logout'),
+    path('create_contents/', views.create_contents, name='create_contents')
 ]

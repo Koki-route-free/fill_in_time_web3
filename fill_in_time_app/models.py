@@ -52,18 +52,18 @@ class UserDB(AbstractBaseUser, PermissionsMixin):
 
     uuid = models.UUIDField(default=uuid_lib.uuid4, primary_key=True, editable=False)     # 管理ID
     username_validators = UnicodeUsernameValidator()     #不正な文字列が含まれていないかチェック
-    username = models.CharField(max_length=13, unique=True, help_text="ニックネームを入力してください")     #ユーザ氏名
+    username = models.CharField(max_length=15, unique=True, help_text="ニックネームを入力してください")     #ユーザ氏名
     email = models.EmailField(unique=True, null=False, blank=False)     #メールアドレス = これで認証する
     icon = models.ImageField('icon', upload_to='media/user/icon', null=True, blank=True)     #アイコン
     profile = models.TextField('profile', blank=True, help_text="プロフィールを255字以内で入力してください")     #プロフィール
-    birthday = models.DateField('birthday', null=True, default=timezone.now)     #誕生日
-    gender = models.CharField("gender", max_length=1, choices=GENDER_CHOICES, blank=False)     #性別
+    birthday = models.DateField('birthday', blank=True, default=timezone.now)     #誕生日
+    gender = models.CharField("gender", max_length=1, choices=GENDER_CHOICES, blank=True)     #性別
     is_active = models.BooleanField(default=True) # アクティブ権限
     is_staff = models.BooleanField(default=False) # スタッフ権限
     is_superuser = models.BooleanField(default=False) # 管理者権限
     date_joined = models.DateTimeField(default=timezone.now) # アカウント作成日時
-    password_changed = models.BooleanField(default=False) # パスワードを変更したかどうかのフラグ
-    password_changed_date = models.DateTimeField(blank=True, null=True) # 最終パスワード変更日時
+    password_changed = models.BooleanField(default=False, null=True) # パスワードを変更したかどうかのフラグ
+    password_changed_date = models.DateTimeField(null=True) # 最終パスワード変更日時
 
     objects = UserManager()
 
@@ -79,10 +79,10 @@ class UserDB(AbstractBaseUser, PermissionsMixin):
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
     def __str__(self):
-        return self.email
+        return self.uuid
 
     def get_full_name(self):
-        return self.username
+        return self.email
     
     def get_short_name(self):
         return self.username
@@ -93,18 +93,60 @@ class ContentsDB(models.Model):
         verbose_name = 'contentsDB'
         verbose_name_plural = 'contentsDB'
     
-    name = 0
-    address = 0
-    classification = 0
-    telephone = 0
-    picture = 0
-    price = 0
-    detail = 0
-    open_time = 0
-    stay_time = 0
-    comments = 0
-    star = 0
-    editer = 0
-    renew_date = 0
+    classifications = (
+        ('1', '見る'),
+        ('2', '聞く'),
+        ('3', '体験する'),
+        ('4', '食べる'),
+        ('5', '飲む'),
+        ('6', '運動'),
+    )
+    prices = (
+        ('0', '0円'),
+        ('1000', '1000円以内'),
+        ('2000', '2000円以内'),
+        ('3000', '3000円以内'),
+        ('4000', '4000円以内'),
+        ('5000', '5000円以内'),
+        ('5001', '5000円以上'),
+    )
+    stay_time = (
+        ('.25', '15分'),
+        ('.5', '30分'),
+        ('1', '1時間'),
+        ('1.5', '1時間半'),
+        ('2', '2時間'),
+        ('2.5', '2時間半'),
+        ('3', '3時間'),
+        ('4', '4時間'),
+        ('5', '5時間'),
+    )
+    stars = (
+        ('1', '1'),
+        ('2', '2'),
+        ('3', '3'),
+        ('4', '4'),
+        ('5', '5'),
+    )
+
+    name = models.CharField(max_length=100, blank=False, null=False, help_text="店舗名もしくは場所の名前を入力してください")     #店舗もしくは場所の名前
+    address = models.CharField(max_length=150, blank=False, null=False, help_text="住所を入力してください")     #店舗もしくは場所の住所
+    homepage = models.CharField(max_length=100, blank=True, null=True, help_text="URLを入力してください")     #店舗もしくは場所のURL
+    classification = models.CharField("classification", max_length=1, choices=classifications, blank=True)     #分類
+    telephone = models.CharField(max_length=20, blank=True, null=True, help_text="電話番号を入力してください")     #店舗もしくは場所の電話番号
+    picture = models.ImageField('icon', upload_to='media/contents', null=True, blank=True)     #写真
+    price = models.CharField("price", max_length=4, choices=prices, blank=True)     #価格
+    detail = models.TextField(max_length=255, blank=True, null=True)     #詳細
+    open_time = models.TextField(max_length=255, blank=True, null=True, help_text="営業時間を入力してください")      #営業時間
+    not_open_day = models.CharField(max_length=100, blank=True, null=True, help_text="定休日を入力してください")     #定休日
+    min_stay_time = models.CharField("min_stay_time", max_length=3, choices=stay_time, blank=False, null=False)     #最小滞在時間
+    max_stay_time = models.CharField("max_stay_time", max_length=3, choices=stay_time, blank=False, null=False)     #最大滞在時間
+    how_come = models.TextField(max_length=255, blank=True, null=True, help_text="アクセス方法を入力してください")      #アクセス
+    comments = models.TextField(max_length=255, blank=True, null=True)      #コメント
+    star = models.CharField("star", max_length=1, choices=stars, blank=True)     #分類
+    editer = models.TextField(blank=False, null=False)     #作成者
+    renew_date = models.DateTimeField(default=timezone.now)      #最新更新日
     
-    
+    # 投稿1つずつの表紙
+    def __str__(self):
+        return self.name
