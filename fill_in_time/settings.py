@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
+import secret_setting, database_setting
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -22,10 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-wgtdrc6a=j!!alssnoyekfbvmd6x6h+5x4#j67$6c8s@3iopun'
+SECRET_KEY = secret_setting.SEACRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = secret_setting.DEBUG
 
 # 仮置き
 ALLOWED_HOSTS = ['*']
@@ -86,10 +87,10 @@ WSGI_APPLICATION = 'fill_in_time.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': 'db',
+        'NAME': database_setting.DATABASES_NAME,
+        'USER': database_setting.DATABASES_USER,
+        'PASSWORD': database_setting.DATABASES_PASSWORD,
+        'HOST': database_setting.DATABASES_HOST,
         'PORT': 5432,
     }
 }

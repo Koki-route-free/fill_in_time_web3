@@ -1,8 +1,6 @@
-最初
-docker compose run --rm web django-admin startproject fill_in_time .
-
-
-
+python 3.9
+django 4.0
+bootstrap -v 4
 
 変更時
 docker compose up -d --build
@@ -27,5 +25,3 @@ migrate:
 createsuperuser:
   docker compose run --rm web python manage.py createsuperuser
 
-python 3.9
-bootstrap -v 5
