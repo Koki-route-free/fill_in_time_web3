@@ -124,6 +124,19 @@ class Contents_Create_View(CreateView):
         return  render(request, 'fill_in_time_app/create_contents.html', {'form': form,})
 
 
+class Search_Result_View(View):
+    def get(self, request, *args, **kwargs):  
+        return render(request, 'fill_in_time_app/search/result.html')
+    
+    def post(self, request, *args, **kwargs):
+        name = request.POST['name']
+        result = ContentsDB.objects
+        result_sample1 = result[0].sample1
+        result_sample2 = result[0].sample2
+        context={'result_sample1':result_sample1, 'result_sample2':result_sample2}
+        return render(request, 'app_folder/page02.html', context=context,)
+
+
 search = Search_View.as_view()
 time_line = Time_line_View.as_view()
 history = History_View.as_view()
@@ -137,3 +150,4 @@ registed_login_login = Registed_login_login_View.as_view()
 registed_login_create = Registed_login_create_View.as_view()
 logout = Logout_View.as_view()
 create_contents = Contents_Create_View.as_view()
+search_result = Search_Result_View.as_view()

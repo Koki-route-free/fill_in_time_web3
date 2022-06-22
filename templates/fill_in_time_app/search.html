@@ -80,7 +80,7 @@
           <option value="0000">24:00</option>
         </select>                      
       </div>
-      <div class="">
+      {% comment %} <div class="">
         <select id="" class="search-list" >
           <option value="1">1名</option>
           <option value="2">2名</option>
@@ -103,7 +103,7 @@
           <option value="19">19名</option>
           <option value="20">20名以上</option>
         </select>
-      </div>
+      </div> {% endcomment %}
       <div class="">
         <select class="search-list">
           <option value=".25">15分</option>
@@ -135,6 +135,7 @@
 {% comment %} <div class="version_telephone">
   <div class="d-flex justify-content-around mt-2 "> 
     <form action="{% url 'fill_in_time_app:admin' %}" method="POST">
+      {% csrf_token %}
       <div class="d-flex justify-content-around">
         <p class="mr-1">
           <input class="form-control " type="text" name="input_data" maxlength="255">
@@ -145,16 +146,12 @@
           </button>
         </p>
       </div>
-      {% csrf_token %}
     </form>
   </div>
 </div> {% endcomment %}
 
-
-<div>
-  検索結果表示
-</div>
-
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrAcub-onlqCPAQw5iiA8ugtLtvY5knYA&callback=initMap" async defer></script>
+{% comment %} <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrAcub-onlqCPAQw5iiA8ugtLtvY5knYA&callback=initMap" async defer></script> {% endcomment %}
 <script type="text/javascript" src="{% static 'js/fill_in_time_app/search.js'%}"></script>
+{% endblock %}
+{% block results %}
 {% endblock %}
