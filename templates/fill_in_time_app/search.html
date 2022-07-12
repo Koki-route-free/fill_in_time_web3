@@ -12,20 +12,21 @@
 <div id="map"></div>
 
 <div class="version_pc">
-  <form method="POST">
-    {% csrf_token %}
+  <form action="{% url 'fill_in_time_app:search' %}" method="get">
+    {% comment %} {% csrf_token %} {% endcomment %}
     <div class="d-flex justify-content-center border-bottom border-top pt-2 pb-2">
       <div class="">
-        <input class="search-list" id="" type="text" name="sa" size="15" autocomplete="off" maxlength="50" value="" placeholder="エリア・駅 [例:銀座、渋谷]">
+        <input class="search-list" id="" type="text" name="area" value="{{ request.GET.area }}" size="15" autocomplete="off" maxlength="50" value="" placeholder="エリア・駅 [例:銀座、渋谷]">
       </div>
       <div class="">
-        <input class="search-list" id="" type="text" name="sk" size="15" maxlength="50" value="" placeholder="キーワード [例:カラオケ、店名、個室]" autocomplete="off">
+        <input class="search-list" id="" type="text" name="keyword" value="{{ request.GET.keyword }}" size="15" maxlength="50" value="" placeholder="キーワード [例:カラオケ、店名、個室]" autocomplete="off">
       </div>
       <div class="">
-        <input type="date" class="search-list">
+        <input type="date" class="search-list" name="date" value="{{ request.GET.date }}" >
       </div>
       <div class="">
-        <select id="" class="search-list">
+        <select id="" class="search-list" name="go_time" value="{{ request.GET.go_time }}" >
+          <option value="" selected></option>
           <option value="0000">0:00</option>
           <option value="0030">0:30</option>
           <option value="0100">1:00</option>
@@ -65,7 +66,7 @@
           <option value="1630">16:30</option>
           <option value="1700">17:00</option>
           <option value="1730">17:30</option>
-          <option selected="selected" value="1800">18:00</option>
+          <option value="1800">18:00</option>
           <option value="1830">18:30</option>
           <option value="1900">19:00</option>
           <option value="1930">19:30</option>
@@ -105,21 +106,22 @@
         </select>
       </div> {% endcomment %}
       <div class="">
-        <select class="search-list">
-          <option value=".25">15分</option>
-          <option value=".5">30分</option>
-          <option value="1">1時間</option>
-          <option value="1.5">1時間30分</option>
-          <option value="2">2時間</option>
-          <option value="2.5">2時間30分</option>
-          <option value="3">3時間</option>
-          <option value="4">4時間</option>
-          <option value="5">5時間以上</option>
+        <select class="search-list" name="stay_time" value="{{ request.GET.stay_time }}" >
+          <option value="" selected></option>
+          <option value="0.25">15分</option>
+          <option value="0.50">30分</option>
+          <option value="1.00">1時間</option>
+          <option value="1.50">1時間30分</option>
+          <option value="2.00">2時間</option>
+          <option value="2.50">2時間30分</option>
+          <option value="3.00">3時間</option>
+          <option value="4.00">4時間</option>
+          <option value="5.00">5時間以上</option>
         </select>
       </div>
       <div class="">
-        <select id="" class="search-list" >
-          <option value="0">0円</option>
+        <select id="" class="search-list" name="price" value="{{ request.GET.price }}" >
+          <option value="0" selected>0円</option>
           <option value="1000">1000円以内</option>
           <option value="2000">2000円以内</option>
           <option value="3000">3000円以内</option>
@@ -128,7 +130,9 @@
           <option value="5001">5000円以上</option>
         </select>
       </div>
-      <input type="submit" name="submit" value="検索" class="ml-2">
+      <button type="submit" class="ml-2">
+        検索
+      </button>
     </div>
   </form>
 </div>
@@ -149,9 +153,23 @@
     </form>
   </div>
 </div> {% endcomment %}
+<h4 class="mt-5 mb-4 border-bottom">DB検索結果を表示</h4>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-4">
+      {% comment %} list_viewはobject_listで返される {% endcomment %}
+      {% for i in object_list %}
+      <tr>
+          <td>{{ i.name }}</td>
+          <td>{{ i.address }}</td>
+          {% empty %}
+          <td>No articles yet.</td>
+      </tr>
+      {% endfor %}
+    </div>
+  </div>
+</div>
 
 {% comment %} <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrAcub-onlqCPAQw5iiA8ugtLtvY5knYA&callback=initMap" async defer></script> {% endcomment %}
 <script type="text/javascript" src="{% static 'js/fill_in_time_app/search.js'%}"></script>
-{% endblock %}
-{% block results %}
 {% endblock %}

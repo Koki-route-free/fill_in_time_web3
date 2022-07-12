@@ -2,14 +2,15 @@ from django.shortcuts import render, redirect
 from django.views import View  
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.views import LogoutView
-from django.views.generic import CreateView
+from django.views.generic import CreateView, ListView
+from django.db.models import Q
 from .forms import UserCreateForm, LoginForm, ContentsCreateForm
 from .models import UserDB, ContentsDB
 
 
-class Search_View(View):  
-    def get(self, request, *args, **kwargs):  
-        return render(request, 'fill_in_time_app/search.html')
+# class Search_View(View):  
+#     def get(self, request, *args, **kwargs):  
+#         return render(request, 'fill_in_time_app/search.html')
 
 
 class Time_line_View(View):
@@ -124,20 +125,60 @@ class Contents_Create_View(CreateView):
         return  render(request, 'fill_in_time_app/create_contents.html', {'form': form,})
 
 
-class Search_Result_View(View):
-    def get(self, request, *args, **kwargs):  
-        return render(request, 'fill_in_time_app/search/result.html')
+class Search_Result_View(ListView):
+    template_name = 'fill_in_time_app/search.html'
     
-    def post(self, request, *args, **kwargs):
-        name = request.POST['name']
+    def get_queryset(self):
         result = ContentsDB.objects
-        result_sample1 = result[0].sample1
-        result_sample2 = result[0].sample2
-        context={'result_sample1':result_sample1, 'result_sample2':result_sample2}
-        return render(request, 'app_folder/page02.html', context=context,)
+
+        area = self.request.GET.get('area')
+        keyword = self.request.GET.get('keyword')
+        date = self.request.GET.get('date')
+        go_time = self.request.GET.get('gotime')
+        stay_time = self.request.GET.get('stay_time')
+        price = self.request.GET.get('price')
+
+        if area is not None:
+            result = result.filter(Q(name__contains=area)|Q(address__contains=area)|Q(how_come__contains=area))
+        if keyword is not None:
+            result = result.filter(Q(name__contains=keyword)|Q(detail__contains=keyword)|Q(comments__contains=keyword))
+        # # if not date is not None:
+        # #     result = result.filter()
+        # # if not go_time is not None:
+        # #     result = result.filter()
+        if stay_time:
+            stay_time = float(stay_time)
+            result = result.filter(min_stay_time__lte=stay_time, max_stay_time__gte=stay_time)
+        if price:
+            price = int(price)
+            result = result.filter(price__lte=price)
+        result = result.all()
+        # result_lists = []
+        # for i in result:
+        #     result_list = {
+        #         "result_name" : i.name,
+        #         "result_address" : i.address,
+        #         "result_homepage" : i.homepage,
+        #         "result_classification" : i.classification,
+        #         "result_telephone" : i.telephone,
+        #         "result_picture" : i.picture,
+        #         "result_price" : i.price,
+        #         "result_detail" : i.detail,
+        #         "result_open_time" : i.open_time,
+        #         "result_not_open_day" : i.not_open_day,
+        #         "result_min_stay_time" : i.min_stay_time,
+        #         "result_max_stay_time" : i.max_stay_time,
+        #         "result_how_come" : i.how_come,
+        #         "result_comments" : i.comments,
+        #         "result_star" : i.star,
+        #         "result_editer" : i.editer,
+        #         "result_renew_data" : i.renew_data,
+        #     }
+        #     result_lists.append(result_list)
+        return result
 
 
-search = Search_View.as_view()
+# search = Search_View.as_view()
 time_line = Time_line_View.as_view()
 history = History_View.as_view()
 registed = Registed_View.as_view()

@@ -1,14 +1,10 @@
 {% extends "fill_in_time_app/search.html" %}
 {% load static %}
-{% block results %}
+{% block extra_css%}
+<link rel="stylesheet" type='text/css' href="{% static 'css/fill_in_time_app/search/result.css'%}">
+{% endblock%}
+{% block contents %}
 {% comment %} 10個だけ表示してスクロールすると見れるように {% endcomment %}
-<h4 class="mt-5 mb-4 border-bottom">DB検索結果を表示</h4>
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-4">
-      <p>sample1：{{result_sample1}}</p>
-      <p>sample2：{{result_sample2}}</p>
-    </div>
-  </div>
-</div>
+
+<script type="text/javascript" src="{% static 'js/fill_in_time_app/search/result.js'%}"></script>
 {% endblock %}

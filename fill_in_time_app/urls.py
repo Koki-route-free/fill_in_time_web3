@@ -4,7 +4,7 @@ from . import views
 app_name = 'fill_in_time_app'
 
 urlpatterns = [
-    path('search/', views.search, name='search'),
+    # path('search/', views.search, name='search'),
     path('time_line/', views.time_line, name='time_line'),
     path('history/', views.history, name='history'),
     path('registed/', views.registed, name='registed'),
@@ -17,5 +17,5 @@ urlpatterns = [
     path('registed/login/create/', views.registed_login_create, name='registed_login_personal'),
     path('logout/', views.logout, name='logout'),
     path('create_contents/', views.create_contents, name='create_contents'),
-    path('search/result', views.search_result, name='search_result'),
+    path('search/', views.search_result, name='search'),
 ]

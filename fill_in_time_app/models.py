@@ -40,14 +40,14 @@ class CustomUserManager(UserManager):
 class UserDB(AbstractBaseUser, PermissionsMixin):
     """Custom User"""
     class Meta:
-        verbose_name = 'userDB'
-        verbose_name_plural = 'userDB'
+        verbose_name = 'UserDB'
+        verbose_name_plural = 'UserDB'
 
 
     GENDER_CHOICES = (
-    ('1', 'woman'),
-    ('2', 'man'),
-    ('3', 'other'),
+    (1, 'woman'),
+    (2, 'man'),
+    (3, 'other'),
     )
 
     uuid = models.UUIDField(default=uuid_lib.uuid4, primary_key=True, editable=False)     # 管理ID
@@ -57,7 +57,7 @@ class UserDB(AbstractBaseUser, PermissionsMixin):
     icon = models.ImageField('icon', upload_to='media/user/icon', null=True, blank=True)     #アイコン
     profile = models.TextField('profile', blank=True, help_text="プロフィールを255字以内で入力してください")     #プロフィール
     birthday = models.DateField('birthday', blank=True, default=timezone.now)     #誕生日
-    gender = models.CharField("gender", max_length=1, choices=GENDER_CHOICES, blank=True)     #性別
+    gender = models.IntegerField(choices=GENDER_CHOICES, blank=True, null=True)     #性別
     is_active = models.BooleanField(default=True) # アクティブ権限
     is_staff = models.BooleanField(default=False) # スタッフ権限
     is_superuser = models.BooleanField(default=False) # 管理者権限
@@ -94,56 +94,56 @@ class ContentsDB(models.Model):
         verbose_name_plural = 'contentsDB'
     
     classifications = (
-        ('1', '見る'),
-        ('2', '聞く'),
-        ('3', '体験する'),
-        ('4', '食べる'),
-        ('5', '飲む'),
-        ('6', '運動'),
+        (1, '見る'),
+        (2, '聞く'),
+        (3, '体験する'),
+        (4, '食べる'),
+        (5, '飲む'),
+        (6, '運動'),
     )
     prices = (
-        ('0', '0円'),
-        ('1000', '1000円以内'),
-        ('2000', '2000円以内'),
-        ('3000', '3000円以内'),
-        ('4000', '4000円以内'),
-        ('5000', '5000円以内'),
-        ('5001', '5000円以上'),
+        (0, '0円'),
+        (1000, '1000円以内'),
+        (2000, '2000円以内'),
+        (3000, '3000円以内'),
+        (4000, '4000円以内'),
+        (5000, '5000円以内'),
+        (5001, '5000円以上'),
     )
     stay_time = (
-        ('.25', '15分'),
-        ('.5', '30分'),
-        ('1', '1時間'),
-        ('1.5', '1時間半'),
-        ('2', '2時間'),
-        ('2.5', '2時間半'),
-        ('3', '3時間'),
-        ('4', '4時間'),
-        ('5', '5時間'),
+        (0.25, '15分'),
+        (0.50, '30分'),
+        (1.00, '1時間'),
+        (1.50, '1時間半'),
+        (2.00, '2時間'),
+        (2.50, '2時間半'),
+        (3.00, '3時間'),
+        (4.00, '4時間'),
+        (5.00, '5時間'),
     )
     stars = (
-        ('1', '1'),
-        ('2', '2'),
-        ('3', '3'),
-        ('4', '4'),
-        ('5', '5'),
+        (1, '1'),
+        (2, '2'),
+        (3, '3'),
+        (4, '4'),
+        (5, '5'),
     )
 
     name = models.CharField(max_length=100, blank=False, null=False, help_text="店舗名もしくは場所の名前を入力してください")     #店舗もしくは場所の名前
     address = models.CharField(max_length=150, blank=False, null=False, help_text="住所を入力してください")     #店舗もしくは場所の住所
     homepage = models.CharField(max_length=100, blank=True, null=True, help_text="URLを入力してください")     #店舗もしくは場所のURL
-    classification = models.CharField("classification", max_length=1, choices=classifications, blank=True)     #分類
+    classification = models.IntegerField("classification", choices=classifications, blank=True)     #分類
     telephone = models.CharField(max_length=20, blank=True, null=True, help_text="電話番号を入力してください")     #店舗もしくは場所の電話番号
     picture = models.ImageField('icon', upload_to='media/contents', null=True, blank=True)     #写真
-    price = models.CharField("price", max_length=4, choices=prices, blank=True)     #価格
+    price = models.IntegerField('price', choices=prices, blank=True)     #価格
     detail = models.TextField(max_length=255, blank=True, null=True)     #詳細
     open_time = models.TextField(max_length=255, blank=True, null=True, help_text="営業時間を入力してください")      #営業時間
     not_open_day = models.CharField(max_length=100, blank=True, null=True, help_text="定休日を入力してください")     #定休日
-    min_stay_time = models.CharField("min_stay_time", max_length=3, choices=stay_time, blank=False, null=False)     #最小滞在時間
-    max_stay_time = models.CharField("max_stay_time", max_length=3, choices=stay_time, blank=False, null=False)     #最大滞在時間
+    min_stay_time = models.FloatField("min_stay_time", choices=stay_time, blank=False, null=False)     #最小滞在時間
+    max_stay_time = models.FloatField("max_stay_time", choices=stay_time, blank=False, null=False)     #最大滞在時間
     how_come = models.TextField(max_length=255, blank=True, null=True, help_text="アクセス方法を入力してください")      #アクセス
     comments = models.TextField(max_length=255, blank=True, null=True)      #コメント
-    star = models.CharField("star", max_length=1, choices=stars, blank=True)     #分類
+    star = models.FloatField("star", choices=stars, blank=True)     #評価
     editer = models.TextField(blank=False, null=False)     #作成者
     renew_date = models.DateTimeField(default=timezone.now)      #最新更新日
     

@@ -17,7 +17,7 @@ docker compose down
 docker compose down -v
 
 makemigrations:
-  docker compose run --rm web python manage.py makemigrations
+  docker compose run --rm web python manage.py makemigrations [app_name]
 
 migrate:
   docker compose run --rm web python manage.py migrate
